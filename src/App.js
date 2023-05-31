@@ -1,23 +1,59 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import Header from './components/Header'
+import Main from './components/Main';
+import Footer from './components/Footer';
+import { useState } from 'react';
+import qNAData from './components/QNAData';
+
 
 function App() {
+
+  const [searchQuery, setSearchQuery] = useState(" ")
+  const [filteredQuestions, setFilteredQuestions] = useState([])
+  const [selectedQuestion, setSelectedQuestion] = useState("");
+
+  const handleSearch = (e) => {
+    const query = e.target.value
+    if (query === ""){
+      setSearchQuery("")
+      setFilteredQuestions([])
+
+    }else {
+      setSearchQuery(query)
+      const filteredResults = qNAData.filter((question) => question.question.toLowerCase().includes(query.toLowerCase()))
+      setFilteredQuestions(filteredResults)
+    }
+  }
+
+  const handleButtonClick = () => {
+    const question = qNAData.find((q) => q.question.toLowerCase() === searchQuery.toLowerCase());
+    setSelectedQuestion(question);
+    setFilteredQuestions([])
+
+  };
+
+  const handleUIClick = (e)=> {
+    const value = e.target.innerHTML
+    const query = e.target.innerHTML
+    const question = qNAData.find((q) => q.question.toLowerCase() === value.toLowerCase());
+    setSelectedQuestion(question)
+    setFilteredQuestions([])
+    setSearchQuery(query)
+  }
+  
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header searchQuery={searchQuery}
+              filteredQuestions={filteredQuestions}
+              handleSearch={handleSearch}
+              handleButtonClick={handleButtonClick}
+              handleUIClick={handleUIClick}
+
+              />
+      <Main selectedQuestion={selectedQuestion} />
+      <Footer />
     </div>
   );
 }
