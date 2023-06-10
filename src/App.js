@@ -15,6 +15,7 @@ function App() {
 
   const handleSearch = (e) => {
     const query = e.target.value
+    console.log(query)
     if (query === ""){
       setSearchQuery("")
       setFilteredQuestions([])
@@ -22,6 +23,8 @@ function App() {
     }else {
       setSearchQuery(query)
       const filteredResults = qNAData.filter((question) => question.question.toLowerCase().includes(query.toLowerCase()))
+      console.log(query)
+      console.log(filteredResults)
       setFilteredQuestions(filteredResults)
     }
   }
